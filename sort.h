@@ -13,9 +13,9 @@
  */
 typedef struct listint_s
 {
-    const int n;
-    struct listint_s *prev;
-    struct listint_s *next;
+	const int n;
+	struct listint_s *prev;
+	struct listint_s *next;
 } listint_t;
 
 /* supplied functions */
@@ -28,8 +28,9 @@ void selection_sort(int *array, size_t size);
 void quick_sort(int *array, size_t size);
 
 /* quick_sort() helpers */
-int partition(int *array, int low, int high, size_t size);
-void quicksort(int *array, int low, int high, size_t size);
+void swap(int *n, int *m);
+int partition(int *array, size_t size, int left, int right);
+void lomuto_sort(int *array, size_t size, int left, int right);
 
 /* advanced task */
 void shell_sort(int *array, size_t size);
