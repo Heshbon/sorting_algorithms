@@ -14,55 +14,53 @@ void swap(int *n, int *m)
 }
 
 /**
- * partition - The function that orders subarray and places pivot
+ * lomuto_partition - The function that orders subarray and places pivot
  * using lomuto partitioning scheme
  * @array: The array of integers to be sorted
+ * @low: Starts the index of subarray
+ * @high: Ends the index of subarray
  * @size: The size of an array
- * @left: Stars the index of subarray
- * @right: Ends the index of subarray
  * Return: The partition index
  */
-int partition(int *array, size_t size, int left, int right)
+int lomuto_partition(int *array, int low, int high, size_t size)
 {
-	int a = left - 1, b;
+	int piv = array[high];
+	int part_index = (low - 1);
+	int p;
 
-	for (b = left; b <= right - 1; b++)
+	for (p = low; p <= high - 1; p++)
 	{
-		if (array[b] < array[right])
+		if (array[p] <= piv)
 		{
-			a++;
-			if (a != b)
+			part_index++;
+			if (part_index != p)
 			{
-				swap(&array[a], &array[b]);
+				swap(&array[part_index], &array[p]);
 				print_array(array, size);
 			}
 		}
 	}
-	if (a + 1 != right)
-	{
-		swap(&array[a + 1], &array[right]);
-		print_array(array, size);
-	}
-	return (a + 1);
+	swap(&array[part_index + 1], &array[high]);
+	print_array(array, size);
+	return (part_index + 1);
 }
 
 /**
  * lomuto_sort - The function that implement the algorithm
  * @array: The array of integers to be sorted
+ * @low: starts the index of the array
+ * @high: Ends the index of the array
  * @size: The size of the array.
- * @left: starts the index of the array
- * @right: Ends the index of the array
  * Return: None
  */
-void lomuto_sort(int *array, size_t size, int left, int right)
+void lomuto_sort(int *array, int low, int high, size_t size)
 {
-	int j;
-
-	if (right - left > 0)
+	if (low < high)
 	{
-		j = partition(array, size, left, right);
-		lomuto_sort(array, size, left, j - 1);
-		lomuto_sort(array, size, j + 1, right);
+		int piv = lomuto_partition(array, low, high, size);
+
+		lomuto_sort(array, low, piv - 1, size);
+		lomuto_sort(array, piv + 1, high, size);
 	}
 }
 
@@ -78,5 +76,5 @@ void quick_sort(int *array, size_t size)
 	if (!array || size < 2)
 		return;
 
-	lomuto_sort(array, size, 0, size - 1);
+	lomuto_sort(array, 0, size - 1, size);
 }
